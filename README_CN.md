@@ -30,6 +30,7 @@ cd aug_cleaner
 
 ```bash
 # 直接修补 Augment 扩展文件
+chmod u+w ~/.vscode/extensions/augment.vscode-augment-*/out/extension.js
 python aug_cleaner.py ~/.vscode/extensions/augment.vscode-augment-*/out/extension.js
 ```
 
