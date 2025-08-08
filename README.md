@@ -26,24 +26,10 @@ git clone https://github.com/gmh5225/aug_cleaner.git
 cd aug_cleaner
 ```
 
-### Usage
+### MacOS Usage
 
 ```bash
-# Basic usage - creates filename_patched.js
-python aug_cleaner.py input_file.js
-
-# Specify output filename
-python aug_cleaner.py input_file.js output_file.js
-```
-
-### Example
-
-```bash
-# Patch Augment extension file
-python aug_cleaner.py ~/.vscode/extensions/augmentcode.augment-*/out/extension.js
-
-# Or specify custom output
-python aug_cleaner.py extension.js extension_clean.js
+python aug_cleaner.py ~/.vscode/extensions/augment.vscode-augment-*/out/extension.js
 ```
 
 ## How It Works
