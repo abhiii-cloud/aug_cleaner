@@ -26,11 +26,23 @@ git clone https://github.com/gmh5225/aug_cleaner.git
 cd aug_cleaner
 ```
 
-### MacOS Usage
+### Usage
 
 ```bash
+# Patch Augment extension file directly
 python aug_cleaner.py ~/.vscode/extensions/augment.vscode-augment-*/out/extension.js
 ```
+
+This will:
+1. **Create backup**: Automatically creates `extension_ori.js` backup
+2. **Patch original**: Modifies the original `extension.js` file directly
+3. **Enable privacy**: Blocks all telemetry while preserving AI functionality
+
+### What happens during patching
+
+- **Backup created**: `extension_ori.js` (original file preserved)
+- **File patched**: `extension.js` (modified with privacy protection)
+- **Safety checks**: Warns if backup exists or file already patched
 
 ## How It Works
 

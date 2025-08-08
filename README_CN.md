@@ -29,22 +29,20 @@ cd aug_cleaner
 ### 使用方法
 
 ```bash
-# 基本用法 - 创建 filename_patched.js
-python aug_cleaner.py input_file.js
-
-# 指定输出文件名
-python aug_cleaner.py input_file.js output_file.js
+# 直接修补 Augment 扩展文件
+python aug_cleaner.py ~/.vscode/extensions/augment.vscode-augment-*/out/extension.js
 ```
 
-### 示例
+工具会自动：
+1. **创建备份**：自动创建 `extension_ori.js` 备份文件
+2. **修补原文件**：直接修改原始 `extension.js` 文件
+3. **启用隐私保护**：阻止所有遥测，保留 AI 功能
 
-```bash
-# 修补 Augment 扩展文件
-python aug_cleaner.py ~/.vscode/extensions/augmentcode.augment-*/out/extension.js
+### 修补过程说明
 
-# 或指定自定义输出
-python aug_cleaner.py extension.js extension_clean.js
-```
+- **创建备份**：`extension_ori.js`（保留原始文件）
+- **修补文件**：`extension.js`（添加隐私保护）
+- **安全检查**：如果备份存在或文件已修补会给出警告
 
 ## 工作原理
 
