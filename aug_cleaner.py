@@ -23,7 +23,9 @@ def aug_cleaner(input_file, patch_mode="block"):
 
         "empty": 'if (typeof s === "string" && (s.startsWith("report-") || s.startsWith("record-"))) { i = {}; }',
 
-        "stealth": 'if (typeof s === "string" && (s.startsWith("report-") || s.startsWith("record-"))) { i = { timestamp: Date.now(), session: Math.random().toString(36).substring(2, 10), events: [] }; }'
+        "stealth": 'if (typeof s === "string" && (s.startsWith("report-") || s.startsWith("record-"))) { i = { timestamp: Date.now(), session: Math.random().toString(36).substring(2, 10), events: [] }; }',
+
+        "debug": 'if (typeof s === "string" && (s.startsWith("report-") || s.startsWith("record-"))) { i = { timestamp: Date.now(), version: Math.random().toString(36).substring(2, 8) }; } if (typeof s === "string" && s === "subscription-info") { return { success: true, subscription: { Enterprise: {}, ActiveSubscription: { end_date: "2026-12-31", usage_balance_depleted: false } } }; } this.maxUploadSizeBytes = 999999999; this.maxTrackableFileCount = 999999; this.completionTimeoutMs = 999999; this.diffBudget = 999999; this.messageBudget = 999999; this.enableDebugFeatures = true;'
     }
 
     if patch_mode not in patches:
@@ -108,7 +110,8 @@ def aug_cleaner(input_file, patch_mode="block"):
             "block": "Complete telemetry blocking - no data sent",
             "random": "Random fake data sent - server receives meaningless data",
             "empty": "Empty data sent - minimal payload",
-            "stealth": "Stealth mode - sends realistic but fake telemetry data"
+            "stealth": "Stealth mode - sends realistic but fake telemetry data",
+            "debug": "Debug mode - fake subscription + unlimited limits + enhanced features"
         }
         
         print(f"Effect: {mode_descriptions[patch_mode]}")
@@ -138,6 +141,7 @@ def main():
         print("  block   - Complete blocking - no telemetry sent")
         print("  empty   - Send empty data - minimal payload")
         print("  stealth - Send realistic but fake telemetry data (most hidden)")
+        print("  debug   - Debug mode - fake subscription + unlimited limits + enhanced features")
         print("")
         print("This will:")
         print("1. Create a backup file with _ori suffix")
