@@ -182,43 +182,6 @@ def aug_cleaner(input_file, patch_mode="block"):
         else:
             print("[WARN] userId telemetry pattern not found")
 
-    # Apply anti-logout protection
-    # Based on actual patterns found in compressed version
-    logout_patterns = [
-        # Pattern found in compressed version: E.status === 401 && this.clientAuth.removeAuthSession()
-        (r'([A-Za-z_$][A-Za-z0-9_$]*)\.status === 401 && this\.clientAuth\.removeAuthSession\(\)', r'\1.status === 999 && this.clientAuth.removeAuthSession()'),
-        # Other potential patterns
-        (r'\(([a-zA-Z_$][a-zA-Z0-9_$]*)\.status === 400 \|\| \1\.status === 401 \|\| \1\.status === 403\)', r'(\1.status === 400 || \1.status === 403)'),
-        (r'([A-Za-z_$][A-Za-z0-9_$]*)\.status === 401 && ([a-zA-Z_$][a-zA-Z0-9_$]*) && this\._auth\.removeSession\(\)', r'\1.status === 999 && \2 && this._auth.removeSession()'),
-        # Generic 401 status checks
-        (r'([A-Za-z_$][A-Za-z0-9_$]*)\.status===401', r'\1.status===999'),
-        (r'([A-Za-z_$][A-Za-z0-9_$]*)\.status === 401', r'\1.status === 999'),
-    ]
-
-    logout_patches_applied = 0
-    for pattern, replacement in logout_patterns:
-        matches = re.findall(pattern, patched_content)
-        if matches:
-            patched_content = re.sub(pattern, replacement, patched_content)
-            logout_patches_applied += 1
-
-    if logout_patches_applied > 0:
-        patches_applied += logout_patches_applied
-        print(f"[OK] Applied anti-logout protection ({logout_patches_applied} patterns)")
-    else:
-        # Check if already patched
-        already_patched_patterns = [
-            r'([A-Za-z_$][A-Za-z0-9_$]*)\.status === 999 && this\.clientAuth\.removeAuthSession\(\)',
-            r'([A-Za-z_$][A-Za-z0-9_$]*)\.status===999',
-            r'([A-Za-z_$][A-Za-z0-9_$]*)\.status === 999',
-        ]
-
-        already_patched = any(re.search(p, patched_content) for p in already_patched_patterns)
-        if already_patched:
-            print("[OK] Anti-logout protection already applied")
-        else:
-            print("[WARN] Anti-logout patterns not found")
-
     # Write patched content back to original file
     try:
         with open(input_file, 'w', encoding='utf-8') as f:
@@ -239,7 +202,6 @@ def aug_cleaner(input_file, patch_mode="block"):
         print("Session ID randomization enabled!")
         print("User-Agent hiding enabled!")
         print("User ID removal enabled!")
-        print("Anti-logout protection enabled!")
         return True
     except Exception as e:
         print(f"Error: Cannot write patched file {input_file}: {e}")
@@ -281,7 +243,6 @@ def main():
         print("- Session ID randomization (prevents user tracking)")
         print("- User-Agent hiding (prevents system fingerprinting)")
         print("- User ID removal (removes userId and anonymousId from telemetry)")
-        print("- Anti-logout protection (prevents forced logout on detection)")
         print("- Comprehensive API coverage (callApi + callApiStream)")
         sys.exit(1)
 
